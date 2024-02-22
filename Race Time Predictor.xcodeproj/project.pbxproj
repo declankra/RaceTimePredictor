@@ -46,6 +46,8 @@
 		FA833CC72B869B06008DCD90 /* Race Time PredictorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Race Time PredictorUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA833CCB2B869B06008DCD90 /* Race_Time_PredictorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Race_Time_PredictorUITests.swift; sourceTree = "<group>"; };
 		FA833CCD2B869B06008DCD90 /* Race_Time_PredictorUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Race_Time_PredictorUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		FA833CDA2B869E16008DCD90 /* Race-Time-Predictor-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Race-Time-Predictor-Info.plist"; sourceTree = SOURCE_ROOT; };
+		FA833CDB2B86A05F008DCD90 /* Race Time Predictor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Race Time Predictor.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,8 @@
 		FA833CAD2B869B05008DCD90 /* Race Time Predictor */ = {
 			isa = PBXGroup;
 			children = (
+				FA833CDB2B86A05F008DCD90 /* Race Time Predictor.entitlements */,
+				FA833CDA2B869E16008DCD90 /* Race-Time-Predictor-Info.plist */,
 				FA833CAE2B869B05008DCD90 /* Race_Time_PredictorApp.swift */,
 				FA833CB02B869B05008DCD90 /* ContentView.swift */,
 				FA833CB22B869B05008DCD90 /* Item.swift */,
@@ -423,12 +427,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Race Time Predictor/Race Time Predictor.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Race Time Predictor/Preview Content\"";
 				DEVELOPMENT_TEAM = 3R48S2N947;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Race-Time-Predictor-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Race Time Predictor";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "To accurately predict your race times, Race Time Predictor app requests access to your Healthkit data. This includes workout history, heart rate, and other metrics to help us tailor our predictions. Your health data stays on your device and is never shared.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "To accurately predict your race times, Race Time Predictor app requests access to your Healthkit data. This includes workout history, heart rate, and other metrics to help us tailor our predictions. Your health data stays on your device and is never shared.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -452,12 +462,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Race Time Predictor/Race Time Predictor.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Race Time Predictor/Preview Content\"";
 				DEVELOPMENT_TEAM = 3R48S2N947;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Race-Time-Predictor-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Race Time Predictor";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "To accurately predict your race times, Race Time Predictor app requests access to your Healthkit data. This includes workout history, heart rate, and other metrics to help us tailor our predictions. Your health data stays on your device and is never shared.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "To accurately predict your race times, Race Time Predictor app requests access to your Healthkit data. This includes workout history, heart rate, and other metrics to help us tailor our predictions. Your health data stays on your device and is never shared.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
