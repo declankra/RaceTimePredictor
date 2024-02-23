@@ -9,6 +9,8 @@ struct ContentView: View {
     @State private var predictionResult: String = ""
     let raceDistances = ["5K", "10K", "Half Marathon", "Marathon"]
     let predictDistances: [Double] = [5.0, 10.0, 21.0975, 42.195] // Distances in kilometers
+    @State private var showingShareSheet = false
+    @State private var shareTime = "null"
     
     var body: some View {
         NavigationView {
@@ -42,7 +44,9 @@ struct ContentView: View {
                         }
                         Link("Learn How This Works", destination: URL(string: "https://declankramper.notion.site/Race-Time-Predictor-App-6a485fdb13d84d07ab26e2aa7c3b2de0?pvs=4")!)
                         Button("Share Results") {
-                            shareResults()
+                            self.showingShareSheet = true
+                    }.sheet(isPresented: $showingShareSheet) {
+                        ActivityView(activityItems: [self.shareMessage()])
                     }
                     }
                 }
@@ -73,7 +77,8 @@ struct ContentView: View {
             HealthKitManager.shared.getRunningWorkouts(begDate: self.begDate, endDate: self.endDate) { performances in
                         let result = HealthKitManager.shared.findBestPerformance(workouts: performances, predictDistance: self.predictDistances[self.selectedDistanceIndex] * 1000)
                         
-                        guard let bestPerformance = result.bestPerformance, let lowestPredictedTime = result.lowestPredictedTime else {
+                                //not using bestPerformance right now
+                        guard let _ = result.bestPerformance, let lowestPredictedTime = result.lowestPredictedTime else {
                             DispatchQueue.main.async {
                                 self.predictionResult = "No workouts found in the specified period."
                                 self.showingResults = true
@@ -87,6 +92,7 @@ struct ContentView: View {
                     // let bestDate = bestPerformance.date // need to add date to bestPerformance by first adding to Performance structure
                 
                 DispatchQueue.main.async {
+                               self.shareTime = self.formatTime(lowestPredictedTime)
                                self.predictionResult = "You are predicted to run a \(self.raceDistances[self.selectedDistanceIndex]) in \(self.formatTime(lowestPredictedTime))"
                                self.showingResults = true
                            }
@@ -102,6 +108,7 @@ struct ContentView: View {
         self.begDate = Date()
         self.endDate = Date()
         self.predictionResult = ""
+        self.shareTime = "null"
     }
     
     private func formatTime(_ time: TimeInterval) -> String {
@@ -117,6 +124,14 @@ struct ContentView: View {
         // This part of the code cannot be directly implemented in SwiftUI without using UIViewControllerRepresentable
         print("Share functionality to be implemented with UIActivityViewController")
     }
+    
+    // Function to construct the share message
+    private func shareMessage() -> String {
+            let distance = raceDistances[selectedDistanceIndex]
+           // let shareTime = predictionResult.suffix(8)
+            // Assume predictionResult is already formatted as "HH:MM:SS"
+        return "Got my \(distance) race time prediction from #RaceTimePredictorApp: \(self.shareTime)! What's yours? #RaceDayGoals 🏃‍♀️🏅"
+        }
 }
 
 // preview in canvas

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FA1775ED2B87B7F8005924CE /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1775EC2B87B7F8005924CE /* HealthKitManager.swift */; };
+		FA17DE752B89508C00B905D1 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA17DE742B89508C00B905D1 /* ActivityView.swift */; };
 		FA833CAF2B869B05008DCD90 /* Race_Time_PredictorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA833CAE2B869B05008DCD90 /* Race_Time_PredictorApp.swift */; };
 		FA833CB12B869B05008DCD90 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA833CB02B869B05008DCD90 /* ContentView.swift */; };
 		FA833CB32B869B05008DCD90 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA833CB22B869B05008DCD90 /* Item.swift */; };
@@ -37,6 +38,7 @@
 
 /* Begin PBXFileReference section */
 		FA1775EC2B87B7F8005924CE /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
+		FA17DE742B89508C00B905D1 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		FA833CAB2B869B05008DCD90 /* Race Time Predictor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Race Time Predictor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA833CAE2B869B05008DCD90 /* Race_Time_PredictorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Race_Time_PredictorApp.swift; sourceTree = "<group>"; };
 		FA833CB02B869B05008DCD90 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				FA833CAE2B869B05008DCD90 /* Race_Time_PredictorApp.swift */,
 				FA1775EC2B87B7F8005924CE /* HealthKitManager.swift */,
 				FA833CB02B869B05008DCD90 /* ContentView.swift */,
+				FA17DE742B89508C00B905D1 /* ActivityView.swift */,
 				FA833CB22B869B05008DCD90 /* Item.swift */,
 				FA833CB42B869B06008DCD90 /* Assets.xcassets */,
 				FA833CB62B869B06008DCD90 /* Preview Content */,
@@ -270,6 +273,7 @@
 				FA833CB12B869B05008DCD90 /* ContentView.swift in Sources */,
 				FA833CB32B869B05008DCD90 /* Item.swift in Sources */,
 				FA1775ED2B87B7F8005924CE /* HealthKitManager.swift in Sources */,
+				FA17DE752B89508C00B905D1 /* ActivityView.swift in Sources */,
 				FA833CAF2B869B05008DCD90 /* Race_Time_PredictorApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
