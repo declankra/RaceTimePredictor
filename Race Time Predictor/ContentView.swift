@@ -1,14 +1,18 @@
 import SwiftUI
 
+// preview in canvas
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
 
 struct ContentView: View {
     @StateObject private var healthKitManager = HealthKitManager()
     @State private var selectedDistanceIndex = 0
     let raceDistances = ["5K", "10K", "Half Marathon", "Marathon"]
-    
     @State private var begDate = Date()
     @State private var endDate = Date()
-    //@State private var prediction: (time: TimeInterval, distance: Double)? = nil
     
     var body: some View {
         NavigationView {
@@ -28,10 +32,19 @@ struct ContentView: View {
                 
                 Section {
                     Button("Get My Prediction") {
-                        healthKitManager.predictDistance = distanceForSelectedIndex(selectedDistanceIndex)
-                        healthKitManager.begDate = begDate
-                        healthKitManager.endDate = endDate
-                        healthKitManager.getHealthData()
+                        print("Button tapped")
+                        healthKitManager.requestAuthorization { authorized in
+                            DispatchQueue.main.async {
+                                if authorized {
+                                    self.healthKitManager.predictDistance = distanceForSelectedIndex(self.selectedDistanceIndex)
+                                    self.healthKitManager.begDate = self.begDate
+                                    self.healthKitManager.endDate = self.endDate
+                                    self.healthKitManager.getHealthData()
+                                } else {
+                                    print("HealthKit authorization was denied by the user.")
+                                }
+                            }
+                        }
                     }
                 }
                 
@@ -44,9 +57,7 @@ struct ContentView: View {
                 }
             }
             .navigationBarTitle("Race Time Predictor")
-        }
-        .onAppear {
-            healthKitManager.requestAuthorization()
+            
         }
     }
     
@@ -65,6 +76,8 @@ struct ContentView: View {
                     return 0 // meters
             }
         }
+    
+    
         
     private func formatTime(_ time: TimeInterval) -> String {
             // Format the time for display
@@ -74,3 +87,5 @@ struct ContentView: View {
             return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
         }
     }
+
+

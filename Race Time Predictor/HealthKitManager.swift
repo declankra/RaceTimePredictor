@@ -23,72 +23,82 @@ class HealthKitManager: ObservableObject {
     @Published var longestDist: Double = 0 // stores longest distance
     @Published var predictedTime: TimeInterval? // holds the predicted time result
 
-
-    func requestAuthorization() {
-        // Define the health data types that we want to write and read
+    // Request HealthKit permission
+    func requestAuthorization(completion: @escaping (Bool) -> Void) {
         let typesToShare: Set = [HKQuantityType.workoutType()]
         let typesToRead: Set = [HKQuantityType.workoutType()]
-        
-        // Request authorization for those types
         healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { success, error in
-            if !success {
-                // Handle the error here.
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("HealthKit authorization error: \(error.localizedDescription)")
+                }
+                print("HealthKit authorization success: \(success)")
+                completion(success)
             }
         }
     }
     
     // Get health data from HealthKit
     func getHealthData() {
-        // Define the sample type to read
+        guard let begDate = begDate, let endDate = endDate else {
+            print("Begin or end date is nil")
+            return
+        }
         let sampleType = HKSampleType.workoutType()
-
-        // Use a predicate to read samples from the HealthKit store
-        let predicate = HKQuery.predicateForSamples(withStart: begDate, end: endDate, options: .strictStartDate)
-
-        // Create the query
-        let query = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (_, samples, error) in
-            guard error == nil else {
-                print("An error occurred fetching the user's workouts: \(error!.localizedDescription)")
+        
+        // Define the predicate to filter workouts by date and by running activity type
+        let datePredicate = HKQuery.predicateForSamples(withStart: begDate, end: endDate, options: .strictStartDate)
+        let runningPredicate = HKQuery.predicateForWorkouts(with: .running)
+        let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [datePredicate, runningPredicate])
+        
+        let query = HKSampleQuery(sampleType: sampleType, predicate: combinedPredicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { [weak self] (_, samples, error) in
+            guard let self = self else {
+                print("Self is nil")
                 return
             }
-
-            if let workouts = samples as? [HKWorkout] {
-                self.findClosestPerf(workouts: workouts)
+            
+            if let error = error {
+                print("An error occurred fetching the user's workouts: \(error.localizedDescription)")
+                return
             }
             
-            DispatchQueue.main.async {
-                    if let closest = self.closestPerf {
-                        let predictedTime = self.calculateTime(distance: self.predictDistance, closestPerf: closest)
-                        // This should be a @Published property or a callback to update ContentView
-                        self.predictedTime = predictedTime
-                    }
-                }
+            guard let workouts = samples as? [HKWorkout], !workouts.isEmpty else {
+                print("No workouts found or not a workout sample")
+                return
+            }
+            
+            print("Fetched \(workouts.count) workouts of type 'Running'")
+            self.findClosestPerf(workouts: workouts)
         }
-        // Execute the query
+        
         healthStore.execute(query)
     }
+
     
     // Find the closest performance
-    func findClosestPerf(workouts: [HKWorkout]) {
-          var bestPerformance: Performance?
-
-          for workout in workouts where workout.workoutActivityType == .running || workout.workoutActivityType == .walking {
-              let distance = workout.totalDistance?.doubleValue(for: .meter()) ?? 0
-
-              if distance > longestDist && distance < predictDistance {
-                  longestDist = distance
-                  bestPerformance = Performance(time: workout.duration, distance: distance)
-              }
-          }
-          
-          if let bestPerf = bestPerformance {
-              DispatchQueue.main.async {
-                  self.closestPerf = bestPerf
-                  self.predictedTime = self.calculateTime(distance: self.predictDistance, closestPerf: bestPerf)
-              }
-          }
-      }
-      
+    private func findClosestPerf(workouts: [HKWorkout]) {
+            DispatchQueue.global(qos: .userInitiated).async {
+                var bestPerformance: Performance?
+                workouts.forEach { workout in
+                    let distance = workout.totalDistance?.doubleValue(for: .meter()) ?? 0
+                    if distance > self.longestDist && distance < self.predictDistance {
+                        self.longestDist = distance
+                        bestPerformance = Performance(time: workout.duration, distance: distance)
+                    }
+                }
+                
+                DispatchQueue.main.async {
+                    if let bestPerf = bestPerformance {
+                        print("Found closest performance: \(bestPerf)")
+                        self.closestPerf = bestPerf
+                        self.predictedTime = self.calculateTime(distance: self.predictDistance, closestPerf: bestPerf)
+                        print("Predicted time: \(self.predictedTime ?? -1)")
+                    } else {
+                        print("No closest performance found")
+                    }
+                }
+            }
+        }
     
     // Calculate predicted time using Pete Riegel’s formula
         func calculateTime(distance predictDistance: Double, closestPerf: Performance) -> TimeInterval {
