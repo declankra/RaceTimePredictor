@@ -34,7 +34,27 @@ struct ContentView: View {
                         Button("Get My Prediction") {
                             getMyPrediction()
                         }.buttonStyle(.automatic)
-                    }
+                    } .overlay(
+                        VStack {
+                            Spacer()
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    // Action to present the feedback form
+                                        self.showingFeedbackView = true
+                                }) {
+                                    Image(systemName: "questionmark.circle")
+                                        .font(.largeTitle)
+                                        .foregroundColor(.blue)
+                                }
+                                .padding(20)
+                                // Present the FeedbackView as a sheet
+                                .sheet(isPresented: $showingFeedbackView) {
+                                    FeedbackView()
+                                          }
+                                      }
+                                  }
+                              )
                 } else {
                     // Results display
                     VStack(spacing: 20) {
@@ -61,27 +81,7 @@ struct ContentView: View {
                     Text("Edit")
                 }
             })
-            .overlay(
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            // Action to present the feedback form
-                            self.showingFeedbackView = true
-                        }) {
-                            Image(systemName: "questionmark.circle")
-                                .font(.largeTitle)
-                                .foregroundColor(.blue)
-                        }
-                        .padding(20)
-                        // Present the FeedbackView as a sheet
-                        .sheet(isPresented: $showingFeedbackView) {
-                            FeedbackView()
-                                  }
-                              }
-                          }
-                      )
+           
         }
     }
     
