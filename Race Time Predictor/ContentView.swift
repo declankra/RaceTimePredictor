@@ -72,7 +72,7 @@ struct ContentView: View {
                         }) {
                             Image(systemName: "questionmark.circle")
                                 .font(.largeTitle)
-                                .foregroundColor(.black)
+                                .foregroundColor(.blue)
                         }
                         .padding(20)
                         // Present the FeedbackView as a sheet
