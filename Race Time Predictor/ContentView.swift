@@ -9,8 +9,10 @@ struct ContentView: View {
     @State private var predictionResult: String = ""
     let raceDistances = ["5K", "10K", "Half Marathon", "Marathon"]
     let predictDistances: [Double] = [5.0, 10.0, 21.0975, 42.195] // Distances in kilometers
-    @State private var showingShareSheet = false
+    @State private var showingShareSheet = false // Add a state variable to control the presentation of the share view
     @State private var shareTime = "null"
+    @State private var showingFeedbackView = false // Add a state variable to control the presentation of the feedback view
+
     
     var body: some View {
         NavigationView {
@@ -59,6 +61,27 @@ struct ContentView: View {
                     Text("Edit")
                 }
             })
+            .overlay(
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            // Action to present the feedback form
+                            self.showingFeedbackView = true
+                        }) {
+                            Image(systemName: "questionmark.circle")
+                                .font(.largeTitle)
+                                .foregroundColor(.black)
+                        }
+                        .padding(20)
+                        // Present the FeedbackView as a sheet
+                        .sheet(isPresented: $showingFeedbackView) {
+                            FeedbackView()
+                                  }
+                              }
+                          }
+                      )
         }
     }
     
