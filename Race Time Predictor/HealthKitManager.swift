@@ -44,7 +44,7 @@ class HealthKitManager {
             }
 
             let performances = workouts.map {
-                Performance(id: $0.uuid, time: $0.duration, distance: $0.totalDistance?.doubleValue(for: .meter()) ?? 0)
+                Performance(id: $0.uuid, time: $0.duration, distance: $0.totalDistance?.doubleValue(for: .meter()) ?? 0, date: $0.startDate)
             }
             completion(performances)
         }
@@ -84,4 +84,6 @@ struct Performance {
     var id: UUID
     var time: Double // Assuming time is in seconds
     var distance: Double // Assuming distance is in meters
+    var date: Date // Adding date to store the workout's start date
+
 }

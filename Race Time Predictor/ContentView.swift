@@ -7,6 +7,8 @@ struct ContentView: View {
     @State private var endDate = Date()
     @State private var showingResults = false
     @State private var predictionResult: String = ""
+    @State private var bestPerformanceDetails: String = "" // for displaying the healthkit data
+    @State private var showBestPerformanceDetails: Bool = false // for toggling details display
     let raceDistances = ["5K", "10K", "Half Marathon", "Marathon"]
     let predictDistances: [Double] = [5.0, 10.0, 21.0975, 42.195] // Distances in kilometers
     @State private var showingShareSheet = false // Add a state variable to control the presentation of the share view
@@ -83,9 +85,30 @@ struct ContentView: View {
                 } else {
                     // Results display
                     VStack(spacing: 20) {
-                        
+                        Spacer()
+
                         Text(predictionResult)
                             .font(.title)
+                        
+
+                        if !bestPerformanceDetails.isEmpty {
+                            Button(action: {
+                                withAnimation {
+                                    showBestPerformanceDetails.toggle()
+                                }
+                            }) {
+                                Text("Show best workout performance from HealthKit used to calculate your prediction")
+                                    .foregroundColor(.blue)
+                            }
+                            if showBestPerformanceDetails {
+                                Text(bestPerformanceDetails)
+                                    .transition(.scale)
+                                    .fixedSize(horizontal: false, vertical: true) // Ensures text wraps and expands vertically.
+                            }
+                        }
+                        
+                        Spacer()
+                        
                         Button("New Prediction") {
                             resetPrediction()
                         }
@@ -95,17 +118,10 @@ struct ContentView: View {
                         }.sheet(isPresented: $showingShareSheet) {
                             ActivityView(activityItems: [self.shareMessage()])
                         }
-                    }
+                    }.padding(50)
                 }
             }
             .navigationBarTitle("Race Time Predictor")
-            .navigationBarItems(trailing: Button(action: {
-                showingResults = false
-            }) {
-                if showingResults {
-                    Text("Edit")
-                }
-            })
             
         }
     }
@@ -121,28 +137,22 @@ struct ContentView: View {
                 return
             }
             
-            // Assuming begDate and endDate are correctly set by the user's input
+            // Assuming begDate and endDate are correctly set by the user's input, get the result from findBestPerformance
             HealthKitManager.shared.getRunningWorkouts(begDate: self.begDate, endDate: self.endDate) { performances in
                 let result = HealthKitManager.shared.findBestPerformance(workouts: performances, predictDistance: self.predictDistances[self.selectedDistanceIndex] * 1000)
-                
-                //not using bestPerformance right now
-                guard let _ = result.bestPerformance, let lowestPredictedTime = result.lowestPredictedTime else {
-                    DispatchQueue.main.async {
-                        self.predictionResult = "No workouts found in the specified period."
-                        self.showingResults = true
-                    }
-                    return
-                }
-                
-                // Display the best performance for reference
-                // let bestTime = bestPerformance.time
-                // let bestDistance = bestPerformance.distance
-                // let bestDate = bestPerformance.date // need to add date to bestPerformance by first adding to Performance structure
+                // Handle results display
                 DispatchQueue.main.async {
-                    self.shareTime = self.formatTime(lowestPredictedTime)
-                    self.predictionResult = "You are predicted to run a \(self.raceDistances[self.selectedDistanceIndex]) in \(self.formatTime(lowestPredictedTime))"
+                    if let bestPerformance = result.bestPerformance, let lowestPredictedTime = result.lowestPredictedTime {
+                        self.predictionResult = "You are predicted to run a \(self.raceDistances[self.selectedDistanceIndex]) in \(self.formatTime(lowestPredictedTime))"
+                        
+                        self.bestPerformanceDetails = "Best Performance\nDate: \(bestPerformance.date.formatted(date: .abbreviated, time: .shortened))\nTime: \(formatTime(bestPerformance.time))\nDistance: \(formatDistance(bestPerformance.distance)) miles"
+                    } else {
+                        self.predictionResult = "No workouts found in the specified period."
+
+                    }
                     self.showingResults = true
                 }
+                
             }
         }
         
@@ -156,8 +166,11 @@ struct ContentView: View {
         self.endDate = Date()
         self.predictionResult = ""
         self.shareTime = "null"
+        self.bestPerformanceDetails = ""
+        self.showBestPerformanceDetails = false
     }
     
+    // Function to format the time for result display
     private func formatTime(_ time: TimeInterval) -> String {
         let hours = Int(time) / 3600
         let minutes = (Int(time) % 3600) / 60
@@ -165,6 +178,16 @@ struct ContentView: View {
         return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
     
+    // Function to format the distance for result display
+    func formatDistance(_ meters: Double) -> String {
+        let miles = meters * 0.000621371 // Conversion factor from meters to miles
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.maximumFractionDigits = 2
+        numberFormatter.minimumFractionDigits = 2
+        return numberFormatter.string(from: NSNumber(value: miles)) ?? "N/A"
+    }
+
     
     // Function to construct the share message
     private func shareMessage() -> String {
