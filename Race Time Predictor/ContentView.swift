@@ -138,7 +138,6 @@ struct ContentView: View {
                 // let bestTime = bestPerformance.time
                 // let bestDistance = bestPerformance.distance
                 // let bestDate = bestPerformance.date // need to add date to bestPerformance by first adding to Performance structure
-                
                 DispatchQueue.main.async {
                     self.shareTime = self.formatTime(lowestPredictedTime)
                     self.predictionResult = "You are predicted to run a \(self.raceDistances[self.selectedDistanceIndex]) in \(self.formatTime(lowestPredictedTime))"
@@ -166,12 +165,6 @@ struct ContentView: View {
         return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
     
-    private func shareResults() {
-        // The actual sharing functionality requires UIKit integration
-        // Use UIActivityViewController in UIKit to share the results
-        // This part of the code cannot be directly implemented in SwiftUI without using UIViewControllerRepresentable
-        print("Share functionality to be implemented with UIActivityViewController")
-    }
     
     // Function to construct the share message
     private func shareMessage() -> String {
@@ -180,6 +173,7 @@ struct ContentView: View {
         // Assume predictionResult is already formatted as "HH:MM:SS"
         return "Got my \(distance) race time prediction from #RaceTimePredictorApp: \(self.shareTime)! What's yours? #RaceDayGoals 🏃‍♀️🏅"
     }
+    
     // structure for health kit message view
     struct HealthKitInfoView: View {
         var body: some View {
