@@ -441,7 +441,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Race Time Predictor/Race Time Predictor.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Race Time Predictor/Preview Content\"";
 				DEVELOPMENT_TEAM = 3R48S2N947;
 				ENABLE_PREVIEWS = YES;
@@ -449,8 +449,8 @@
 				INFOPLIST_FILE = "Race-Time-Predictor-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Race Time Predictor";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "To accurately predict your race times, Race Time Predictor app requests access to your Healthkit data. This includes workout history, heart rate, and other metrics to help us tailor our predictions. Your health data stays on your device and is never shared.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "To accurately predict your race times, Race Time Predictor app requests access to your Healthkit data. This includes workout history, heart rate, and other metrics to help us tailor our predictions. Your health data stays on your device and is never shared.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "To accurately predict your race times, Race Time Calculator app requests access to your Healthkit data. This includes workout history to help us tailor our predictions. Your health data stays on your device and is never shared.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "To accurately predict your race times, Race Time Calculator app requests access to your Healthkit data. This includes workout history to help us tailor our predictions. Your health data stays on your device and is never shared.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -477,7 +477,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Race Time Predictor/Race Time Predictor.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Race Time Predictor/Preview Content\"";
 				DEVELOPMENT_TEAM = 3R48S2N947;
 				ENABLE_PREVIEWS = YES;
@@ -485,8 +485,8 @@
 				INFOPLIST_FILE = "Race-Time-Predictor-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Race Time Predictor";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "To accurately predict your race times, Race Time Predictor app requests access to your Healthkit data. This includes workout history, heart rate, and other metrics to help us tailor our predictions. Your health data stays on your device and is never shared.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "To accurately predict your race times, Race Time Predictor app requests access to your Healthkit data. This includes workout history, heart rate, and other metrics to help us tailor our predictions. Your health data stays on your device and is never shared.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "To accurately predict your race times, Race Time Calculator app requests access to your Healthkit data. This includes workout history to help us tailor our predictions. Your health data stays on your device and is never shared.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "To accurately predict your race times, Race Time Calculator app requests access to your Healthkit data. This includes workout history to help us tailor our predictions. Your health data stays on your device and is never shared.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

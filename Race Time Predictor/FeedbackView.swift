@@ -50,7 +50,7 @@ struct FeedbackView: View {
                 
                 Section(header: Text("Credits")) {
                     Text("@dkbuilds")
-                    Text("declankramper.me")
+                    Link("declankramper.me", destination: URL(string: "https://declankramper.me")!)
                     Text("built feb '24")
                 }
             }
