@@ -54,6 +54,7 @@
 		FA833CCD2B869B06008DCD90 /* Race_Time_PredictorUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Race_Time_PredictorUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		FA833CDA2B869E16008DCD90 /* Race-Time-Predictor-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Race-Time-Predictor-Info.plist"; sourceTree = SOURCE_ROOT; };
 		FA833CDB2B86A05F008DCD90 /* Race Time Predictor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Race Time Predictor.entitlements"; sourceTree = "<group>"; };
+		FAA505052C73B2CD00B333A3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +115,7 @@
 				FA833CB22B869B05008DCD90 /* Item.swift */,
 				FA833CB42B869B06008DCD90 /* Assets.xcassets */,
 				FA833CB62B869B06008DCD90 /* Preview Content */,
+				FAA505052C73B2CD00B333A3 /* README.md */,
 			);
 			path = "Race Time Predictor";
 			sourceTree = "<group>";
@@ -461,7 +463,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "dkbuilds.Race-Time-Predictor";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -497,7 +499,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "dkbuilds.Race-Time-Predictor";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
