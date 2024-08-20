@@ -18,6 +18,14 @@
 		FA833CC22B869B06008DCD90 /* Race_Time_PredictorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA833CC12B869B06008DCD90 /* Race_Time_PredictorTests.swift */; };
 		FA833CCC2B869B06008DCD90 /* Race_Time_PredictorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA833CCB2B869B06008DCD90 /* Race_Time_PredictorUITests.swift */; };
 		FA833CCE2B869B06008DCD90 /* Race_Time_PredictorUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA833CCD2B869B06008DCD90 /* Race_Time_PredictorUITestsLaunchTests.swift */; };
+		FAA5050D2C73CB8600B333A3 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = FAA5050C2C73CB8600B333A3 /* FirebaseAnalytics */; };
+		FAA5050F2C73CB8600B333A3 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = FAA5050E2C73CB8600B333A3 /* FirebaseAnalyticsOnDeviceConversion */; };
+		FAA505112C73CB8600B333A3 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = FAA505102C73CB8600B333A3 /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		FAA505132C73CB8600B333A3 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = FAA505122C73CB8600B333A3 /* FirebaseAppCheck */; };
+		FAA505152C73CB8600B333A3 /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = FAA505142C73CB8600B333A3 /* FirebaseAppDistribution-Beta */; };
+		FAD8188C2C73F01E003D3B6D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD8188B2C73F01E003D3B6D /* AppDelegate.swift */; };
+		FAD818912C73F1B5003D3B6D /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = FAD818902C73F1B5003D3B6D /* FirebaseFirestore */; };
+		FAF24D8B2C73DF5A00EBD7D7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FAA5050A2C73CA9300B333A3 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +63,8 @@
 		FA833CDA2B869E16008DCD90 /* Race-Time-Predictor-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Race-Time-Predictor-Info.plist"; sourceTree = SOURCE_ROOT; };
 		FA833CDB2B86A05F008DCD90 /* Race Time Predictor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Race Time Predictor.entitlements"; sourceTree = "<group>"; };
 		FAA505052C73B2CD00B333A3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		FAA5050A2C73CA9300B333A3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FAD8188B2C73F01E003D3B6D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +72,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAA505132C73CB8600B333A3 /* FirebaseAppCheck in Frameworks */,
+				FAA5050D2C73CB8600B333A3 /* FirebaseAnalytics in Frameworks */,
+				FAA505152C73CB8600B333A3 /* FirebaseAppDistribution-Beta in Frameworks */,
+				FAA505112C73CB8600B333A3 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				FAA5050F2C73CB8600B333A3 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
+				FAD818912C73F1B5003D3B6D /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,13 +121,15 @@
 		FA833CAD2B869B05008DCD90 /* Race Time Predictor */ = {
 			isa = PBXGroup;
 			children = (
+				FAA5050A2C73CA9300B333A3 /* GoogleService-Info.plist */,
 				FA833CDB2B86A05F008DCD90 /* Race Time Predictor.entitlements */,
 				FA833CDA2B869E16008DCD90 /* Race-Time-Predictor-Info.plist */,
 				FA833CAE2B869B05008DCD90 /* Race_Time_PredictorApp.swift */,
+				FAD8188B2C73F01E003D3B6D /* AppDelegate.swift */,
 				FA1775EC2B87B7F8005924CE /* HealthKitManager.swift */,
 				FA833CB02B869B05008DCD90 /* ContentView.swift */,
-				FA17DE742B89508C00B905D1 /* ActivityView.swift */,
 				FA7617242B8E2E5100BAADF2 /* FeedbackView.swift */,
+				FA17DE742B89508C00B905D1 /* ActivityView.swift */,
 				FA833CB22B869B05008DCD90 /* Item.swift */,
 				FA833CB42B869B06008DCD90 /* Assets.xcassets */,
 				FA833CB62B869B06008DCD90 /* Preview Content */,
@@ -161,6 +179,14 @@
 			dependencies = (
 			);
 			name = "Race Time Predictor";
+			packageProductDependencies = (
+				FAA5050C2C73CB8600B333A3 /* FirebaseAnalytics */,
+				FAA5050E2C73CB8600B333A3 /* FirebaseAnalyticsOnDeviceConversion */,
+				FAA505102C73CB8600B333A3 /* FirebaseAnalyticsWithoutAdIdSupport */,
+				FAA505122C73CB8600B333A3 /* FirebaseAppCheck */,
+				FAA505142C73CB8600B333A3 /* FirebaseAppDistribution-Beta */,
+				FAD818902C73F1B5003D3B6D /* FirebaseFirestore */,
+			);
 			productName = "Race Time Predictor";
 			productReference = FA833CAB2B869B05008DCD90 /* Race Time Predictor.app */;
 			productType = "com.apple.product-type.application";
@@ -179,6 +205,8 @@
 				FA833CBF2B869B06008DCD90 /* PBXTargetDependency */,
 			);
 			name = "Race Time PredictorTests";
+			packageProductDependencies = (
+			);
 			productName = "Race Time PredictorTests";
 			productReference = FA833CBD2B869B06008DCD90 /* Race Time PredictorTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -233,6 +261,9 @@
 				Base,
 			);
 			mainGroup = FA833CA22B869B05008DCD90;
+			packageReferences = (
+				FAA5050B2C73CB8600B333A3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = FA833CAC2B869B05008DCD90 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -249,6 +280,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAF24D8B2C73DF5A00EBD7D7 /* GoogleService-Info.plist in Resources */,
 				FA833CB82B869B06008DCD90 /* Preview Assets.xcassets in Resources */,
 				FA833CB52B869B06008DCD90 /* Assets.xcassets in Resources */,
 			);
@@ -279,6 +311,7 @@
 				FA833CB32B869B05008DCD90 /* Item.swift in Sources */,
 				FA1775ED2B87B7F8005924CE /* HealthKitManager.swift in Sources */,
 				FA17DE752B89508C00B905D1 /* ActivityView.swift in Sources */,
+				FAD8188C2C73F01E003D3B6D /* AppDelegate.swift in Sources */,
 				FA833CAF2B869B05008DCD90 /* Race_Time_PredictorApp.swift in Sources */,
 				FA7617252B8E2E5100BAADF2 /* FeedbackView.swift in Sources */,
 			);
@@ -624,6 +657,50 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FAA5050B2C73CB8600B333A3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FAA5050C2C73CB8600B333A3 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FAA5050B2C73CB8600B333A3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		FAA5050E2C73CB8600B333A3 /* FirebaseAnalyticsOnDeviceConversion */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FAA5050B2C73CB8600B333A3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsOnDeviceConversion;
+		};
+		FAA505102C73CB8600B333A3 /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FAA5050B2C73CB8600B333A3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
+		};
+		FAA505122C73CB8600B333A3 /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FAA5050B2C73CB8600B333A3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
+		};
+		FAA505142C73CB8600B333A3 /* FirebaseAppDistribution-Beta */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FAA5050B2C73CB8600B333A3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseAppDistribution-Beta";
+		};
+		FAD818902C73F1B5003D3B6D /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FAA5050B2C73CB8600B333A3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FA833CA32B869B05008DCD90 /* Project object */;
 }
