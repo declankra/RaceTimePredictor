@@ -36,31 +36,25 @@ struct ContentView: View {
                         }
 
                         
-                        VStack {
-                            Spacer() // Centers the button vertically by pushing it away from the top edge
-                            HStack {
-                                Spacer() // Centers the button horizontally by pushing it away from the leading edge
-                                Button("Get My Prediction") {
-                                    getMyPrediction()
+                        Section {
+                            Button("Get My Prediction") {
+                                getMyPrediction()
+                            }
+                            .buttonStyle(ProminentButtonStyle())
+                        }
+                        
+                        Section {
+                            NavigationLink(destination: HealthKitInfoView()) {
+                                HStack {
+                                    Image(systemName: "info.circle")
+                                        .imageScale(.medium)
+                                    Text("HealthKit Data Usage")
                                 }
-                                .buttonStyle(ProminentButtonStyle()) // Apply the custom button style
-                                .frame(width: 200) // Use a fixed width for the button
-                                Spacer() // Centers the button horizontally by pushing it away from the trailing edge
+                                .foregroundColor(.blue)
                             }
-                            Spacer() // Centers the button vertically by pushing it away from the bottom edge
                         }
-                        
-                        NavigationLink(destination: HealthKitInfoView()) {
-                            HStack {
-                                Image(systemName: "info.circle")
-                                    .imageScale(.large)
-                                Text("HealthKit Data Usage")
-                            }
-                            .foregroundColor(.blue)
-                        }
-                        .padding(.top, 5) // Adds some space above the link
-                        
-                    }.overlay(
+                    }
+                    .overlay(
                         VStack {
                             Spacer()
                             HStack {
@@ -73,7 +67,7 @@ struct ContentView: View {
                                         .font(.largeTitle)
                                         .foregroundColor(.blue)
                                 }
-                                .padding(20)
+                                .padding()
                                 // Present the FeedbackView as a sheet
                                 .sheet(isPresented: $showingFeedbackView) {
                                     FeedbackView()
@@ -218,13 +212,19 @@ struct ContentView: View {
     //structure for reusable button
     struct ProminentButtonStyle: ButtonStyle {
         func makeBody(configuration: Self.Configuration) -> some View {
-            configuration.label
-                .padding()
-                .background(Color.blue) // Use your app’s theme color here
-                .foregroundColor(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-                .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-                .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
+            HStack {
+                       Spacer() // Add a Spacer to the left side
+                       configuration.label
+                           .padding()
+                           .background(Color.blue) // Use your app’s theme color here
+                           .foregroundColor(.white)
+                           .clipShape(RoundedRectangle(cornerRadius: 8))
+                           .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+                           .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
+                       Spacer() // Add a Spacer to the right side
+                   }
+            .background(Color.clear) // Ensure the HStack background is clear
+
         }
     }
 }

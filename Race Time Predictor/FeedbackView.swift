@@ -13,19 +13,20 @@ struct FeedbackView: View {
     
     var body: some View {
         NavigationView {
-            List {
+            Form {
                 Section {
                     Toggle(isOn: $showFormulaAssumptions) {
                         Text(showFormulaAssumptions ? "Assumptions " : "Show formula assumptions")
                     }
                     
                     if showFormulaAssumptions {
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading, spacing: 10) {
                             Text("1. It is assumed that a runner has completed the necessary training for the distance they decide to run. A strong performance on the 10km course the day before does not imply that you can run a half-marathon in 1h 30 minutes today. ")
                             Text("2. Assumes that an athlete does not have a solid inherent aptitude for speed or endurance. Some people will always do better than others regardless of how much they train.")
                             Text("3. The computations are less precise for times less than 3.5 minutes and more than 4 hours.")
                         }
-                        .transition(.slide)
+                        .transition(.opacity)
+                        .animation(.default, value: showFormulaAssumptions)
                     }
                     
                 }
@@ -45,13 +46,12 @@ struct FeedbackView: View {
                     }
                     .pickerStyle(SegmentedPickerStyle())
                     
-                    Button(action: {
-                        submitFeedback()
-                    }) {
+                    Button(action: submitFeedback) {
                         Text("Submit Feedback")
-                            .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
+                            .padding()
                             .background(Color.blue)
+                            .foregroundColor(.white)
                             .cornerRadius(10)
                     }
                     .alert(isPresented: $showAlert) {
@@ -60,11 +60,9 @@ struct FeedbackView: View {
                 }
                 
                 Section(header: Text("Credits")) {
-                    Text("@dkbuilds")
-                        .foregroundColor(.blue)
-                        .onTapGesture {
-                            openEmail()
-                        }
+                    Button("@dkbuilds") {
+                        openEmail()
+                    }
                     Link("declankramper.me", destination: URL(string: "https://declankramper.me")!)
                         .foregroundColor(.blue)
                     Link("built feb '24", destination: URL(string: "https://declankramper.notion.site/Race-Time-Predictor-App-6a485fdb13d84d07ab26e2aa7c3b2de0?pvs=4")!)
@@ -72,7 +70,7 @@ struct FeedbackView: View {
                 }
             }
                 .navigationBarTitle("About", displayMode: .inline)
-                .listStyle(SidebarListStyle())
+            
             }
         }
     
@@ -92,8 +90,10 @@ struct FeedbackView: View {
             ]
         }
     }
-        
+
+    
     func submitFeedback() {
+       
         if featureExpected.isEmpty || featureMagic.isEmpty {
             alertMessage = "Please fill out all feedback fields"
             showAlert = true
@@ -119,14 +119,10 @@ struct FeedbackView: View {
         }
     }
         
-        func openEmail() {
+    func openEmail() {
             let email = "declankramper@gmail.com"
             if let emailURL = URL(string: "mailto:\(email)") {
-                if UIApplication.shared.canOpenURL(emailURL) {
-                    UIApplication.shared.open(emailURL, options: [:], completionHandler: nil)
-                } else {
-                    print("Cannot open email client")
-                }
+                UIApplication.shared.open(emailURL, options: [:], completionHandler: nil)
             }
         }
 
