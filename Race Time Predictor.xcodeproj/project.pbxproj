@@ -477,7 +477,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Race Time Predictor/Race Time Predictor.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Race Time Predictor/Preview Content\"";
 				DEVELOPMENT_TEAM = 3R48S2N947;
 				ENABLE_PREVIEWS = YES;
@@ -513,7 +513,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Race Time Predictor/Race Time Predictor.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Race Time Predictor/Preview Content\"";
 				DEVELOPMENT_TEAM = 3R48S2N947;
 				ENABLE_PREVIEWS = YES;
