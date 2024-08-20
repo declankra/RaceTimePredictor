@@ -138,7 +138,7 @@ struct ContentView: View {
                 DispatchQueue.main.async {
                     if let bestPerformance = result.bestPerformance, let lowestPredictedTime = result.lowestPredictedTime {
                         self.predictionResult = "You are predicted to run a \(self.raceDistances[self.selectedDistanceIndex]) in \(self.formatTime(lowestPredictedTime))"
-                        
+                        self.shareTime = self.formatTime(lowestPredictedTime)
                         self.bestPerformanceDetails = "Best Performance\nDate: \(bestPerformance.date.formatted(date: .abbreviated, time: .shortened))\nTime: \(formatTime(bestPerformance.time))\nDistance: \(formatDistance(bestPerformance.distance)) miles"
                     } else {
                         self.predictionResult = "No workouts found in the specified period."
@@ -159,7 +159,7 @@ struct ContentView: View {
         self.begDate = Date()
         self.endDate = Date()
         self.predictionResult = ""
-        self.shareTime = "null"
+        self.shareTime = "[null]"
         self.bestPerformanceDetails = ""
         self.showBestPerformanceDetails = false
     }
