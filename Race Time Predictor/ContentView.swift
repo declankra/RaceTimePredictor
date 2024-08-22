@@ -18,107 +18,121 @@ struct ContentView: View {
     
     
     var body: some View {
-        NavigationView {
-            VStack {
-                if !showingResults {
-                    Form {
-                        Section(header: Text("Select your race distance")) {
-                            Picker("Race Distance", selection: $selectedDistanceIndex) {
-                                ForEach(0..<raceDistances.count, id: \.self) {
-                                    Text(self.raceDistances[$0])
-                                }
-                            }
-                        }
-                        
-                        Section(header: Text("Select training period for prediction")) {
-                            DatePicker("Beginning Date", selection: $begDate, in: ...Date(), displayedComponents: .date)
-                            DatePicker("End Date", selection: $endDate, in: ...Date(), displayedComponents: .date)
-                        }
+           NavigationView {
+               ScrollView {
+                   VStack(alignment: .leading, spacing: 70) {
+                       if !showingResults {
+                           raceDistanceSection
+                           trainingPeriodSection
+                           getPredictionButton
+                           healthKitInfoLink
 
-                        
-                        Section {
-                            Button("Get My Prediction") {
-                                getMyPrediction()
-                            }
-                            .buttonStyle(ProminentButtonStyle())
-                        }
-                        
-                        Section {
-                            NavigationLink(destination: HealthKitInfoView()) {
-                                HStack {
-                                    Image(systemName: "info.circle")
-                                        .imageScale(.medium)
-                                    Text("HealthKit Data Usage")
-                                }
-                                .foregroundColor(.blue)
-                            }
-                        }
-                    }
-                    .overlay(
-                        VStack {
-                            Spacer()
-                            HStack {
-                                Spacer()
-                                Button(action: {
-                                    // Action to present the feedback form
-                                    self.showingFeedbackView = true
-                                }) {
-                                    Image(systemName: "questionmark.circle")
-                                        .font(.largeTitle)
-                                        .foregroundColor(.blue)
-                                }
-                                .padding()
-                                // Present the FeedbackView as a sheet
-                                .sheet(isPresented: $showingFeedbackView) {
-                                    FeedbackView()
-                                }
-                            }
-                        }
-                    )
-                    
-                } else {
-                    // Results display
-                    VStack(spacing: 20) {
-                        Spacer()
+                       } else {
+                           resultsSection
+                       }
+                   }
+                   .padding()
+               }
+               .navigationBarTitle("Race Time Predictor")
+               .overlay(feedbackButton, alignment: .bottomTrailing)
+           }
+       }
+       
+       var raceDistanceSection: some View {
+           HStack {
+               Text("Select your race distance")
+                   .font(.title3)
+                   .fontWeight(.bold)
+               Spacer()
+               Picker("Race Distance", selection: $selectedDistanceIndex) {
+                   ForEach(0..<raceDistances.count, id: \.self) {
+                       Text(self.raceDistances[$0])
+                   }
+               } .pickerStyle(MenuPickerStyle())
+           }
+       }
+       
+       var trainingPeriodSection: some View {
+           VStack(alignment: .leading, spacing: 10) {
+               Text("Select training period for prediction")
+                   .font(.title3)
+                   .fontWeight(.bold)
+               DatePicker("Beginning Date", selection: $begDate, in: ...Date(), displayedComponents: .date)
+               DatePicker("End Date", selection: $endDate, in: ...Date(), displayedComponents: .date)
+           }
+       }
+       
+       var getPredictionButton: some View {
+           Button("Get My Prediction") {
+               getMyPrediction()
+           }
+           .buttonStyle(ProminentButtonStyle())
+       }
+       
+       var healthKitInfoLink: some View {
+           NavigationLink(destination: HealthKitInfoView()) {
+               HStack {
+                   Image(systemName: "info.circle")
+                       .imageScale(.medium)
+                   Text("HealthKit Data Usage")
+               }
+               .foregroundColor(.blue)
+           }
+       }
+       
+       var resultsSection: some View {
+           VStack(spacing: 20) {
+               Spacer()
+               
+               Text(predictionResult)
+                   .font(.title)
+               
+               if !bestPerformanceDetails.isEmpty {
+                   Button(action: {
+                       withAnimation {
+                           showBestPerformanceDetails.toggle()
+                       }
+                   }) {
+                       Text("Show best workout performance from HealthKit used to calculate your prediction")
+                           .foregroundColor(.blue)
+                   }
+                   if showBestPerformanceDetails {
+                       Text(bestPerformanceDetails)
+                           .transition(.scale)
+                           .fixedSize(horizontal: false, vertical: true)
+                   }
+               }
+               
+               Spacer()
+               Spacer()
+               Spacer()
 
-                        Text(predictionResult)
-                            .font(.title)
-                        
-
-                        if !bestPerformanceDetails.isEmpty {
-                            Button(action: {
-                                withAnimation {
-                                    showBestPerformanceDetails.toggle()
-                                }
-                            }) {
-                                Text("Show best workout performance from HealthKit used to calculate your prediction")
-                                    .foregroundColor(.blue)
-                            }
-                            if showBestPerformanceDetails {
-                                Text(bestPerformanceDetails)
-                                    .transition(.scale)
-                                    .fixedSize(horizontal: false, vertical: true) // Ensures text wraps and expands vertically.
-                            }
-                        }
-                        
-                        Spacer()
-                        
-                        Button("New Prediction") {
-                            resetPrediction()
-                        }
-                        Link("Learn How This Works", destination: URL(string: "https://declankramper.notion.site/Race-Time-Predictor-App-6a485fdb13d84d07ab26e2aa7c3b2de0?pvs=4")!)
-                        Button("Share Results") {
-                            self.showingShareSheet = true
-                        }.sheet(isPresented: $showingShareSheet) {
-                            ActivityView(activityItems: [self.shareMessage()])
-                        }
-                    }.padding(50)
-                }
-            }
-            .navigationBarTitle("Race Time Predictor")
-            
-        }
-    }
+               Button("New Prediction") {
+                   resetPrediction()
+               }
+               Link("Learn How This Works", destination: URL(string: "https://declankramper.notion.site/Race-Time-Predictor-App-6a485fdb13d84d07ab26e2aa7c3b2de0?pvs=4")!)
+               Button("Share Results") {
+                   self.showingShareSheet = true
+               }
+               .sheet(isPresented: $showingShareSheet) {
+                   ActivityView(activityItems: [self.shareMessage()])
+               }
+           }
+       }
+       
+       var feedbackButton: some View {
+           Button(action: {
+               self.showingFeedbackView = true
+           }) {
+               Image(systemName: "questionmark.circle")
+                   .font(.largeTitle)
+                   .foregroundColor(.blue)
+           }
+           .padding()
+           .sheet(isPresented: $showingFeedbackView) {
+               FeedbackView()
+           }
+       }
     
     private func getMyPrediction() {
         HealthKitManager.shared.requestAuthorization { success, error in
@@ -137,7 +151,7 @@ struct ContentView: View {
                 // Handle results display
                 DispatchQueue.main.async {
                     if let bestPerformance = result.bestPerformance, let lowestPredictedTime = result.lowestPredictedTime {
-                        self.predictionResult = "You are predicted to run a \(self.raceDistances[self.selectedDistanceIndex]) in \(self.formatTime(lowestPredictedTime))"
+                        self.predictionResult = "You are predicted to run a \(self.raceDistances[self.selectedDistanceIndex]) in:\n \(self.formatTime(lowestPredictedTime))"
                         self.shareTime = self.formatTime(lowestPredictedTime)
                         self.bestPerformanceDetails = "Best Performance\nDate: \(bestPerformance.date.formatted(date: .abbreviated, time: .shortened))\nTime: \(formatTime(bestPerformance.time))\nDistance: \(formatDistance(bestPerformance.distance)) miles"
                     } else {
@@ -218,7 +232,7 @@ struct ContentView: View {
                            .padding()
                            .background(Color.blue) // Use your app’s theme color here
                            .foregroundColor(.white)
-                           .clipShape(RoundedRectangle(cornerRadius: 8))
+                           .clipShape(RoundedRectangle(cornerRadius: 10))
                            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
                            .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
                        Spacer() // Add a Spacer to the right side
