@@ -87,6 +87,8 @@ struct ContentView: View {
                Text(predictionResult)
                    .font(.title)
                
+               Spacer()
+               
                if !bestPerformanceDetails.isEmpty {
                    Button(action: {
                        withAnimation {
@@ -151,7 +153,7 @@ struct ContentView: View {
                 // Handle results display
                 DispatchQueue.main.async {
                     if let bestPerformance = result.bestPerformance, let lowestPredictedTime = result.lowestPredictedTime {
-                        self.predictionResult = "You are predicted to run a \(self.raceDistances[self.selectedDistanceIndex]) in:\n \(self.formatTime(lowestPredictedTime))"
+                        self.predictionResult = "You are predicted to run a \(self.raceDistances[self.selectedDistanceIndex]) in:  \(self.formatTime(lowestPredictedTime))"
                         self.shareTime = self.formatTime(lowestPredictedTime)
                         self.bestPerformanceDetails = "Best Performance\nDate: \(bestPerformance.date.formatted(date: .abbreviated, time: .shortened))\nTime: \(formatTime(bestPerformance.time))\nDistance: \(formatDistance(bestPerformance.distance)) miles"
                     } else {

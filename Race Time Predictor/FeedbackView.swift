@@ -6,73 +6,129 @@ struct FeedbackView: View {
     @State private var showFormulaAssumptions: Bool = false
     @State private var featureExpected: String = ""
     @State private var featureMagic: String = ""
-    @State private var satisfactionRating: Int = 5  // Default to mid-scale
+    @State private var satisfactionRating: Int = 5
     let satisfactionOptions = [1, 2, 3, 4, 5, 6, 8, 9, 10]
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
+    @FocusState private var focusedField: FocusField?
     
+    enum FocusField: Hashable {
+        case expected, magic
+    }
+    
+    // body variable >> view for all three section variables included
     var body: some View {
         NavigationView {
-            Form {
-                Section {
-                    Toggle(isOn: $showFormulaAssumptions) {
-                        Text(showFormulaAssumptions ? "Assumptions " : "Show formula assumptions")
-                    }
-                    
-                    if showFormulaAssumptions {
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("1. It is assumed that a runner has completed the necessary training for the distance they decide to run. A strong performance on the 10km course the day before does not imply that you can run a half-marathon in 1h 30 minutes today. ")
-                            Text("2. Assumes that an athlete does not have a solid inherent aptitude for speed or endurance. Some people will always do better than others regardless of how much they train.")
-                            Text("3. The computations are less precise for times less than 3.5 minutes and more than 4 hours.")
-                        }
-                        .transition(.opacity)
-                        .animation(.default, value: showFormulaAssumptions)
-                    }
-                    
+            ScrollView {
+                VStack(alignment: .leading, spacing: 50) {
+                    assumptionsSection
+                    feedbackSection
+                    creditsSection
                 }
-                
-                Section(header: Text("Give feedback")) {
-                    Text("What feature did you expect in the product but did not find?")
-                    TextField("I expected...", text: $featureExpected)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    Text("If you could magically add one feature, what would it do?")
-                    TextField("It would...", text: $featureMagic)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    Text("How satisfied are you with the product?")
-                    Picker("Satisfaction", selection: $satisfactionRating) {
-                        ForEach(satisfactionOptions, id: \.self) { number in
-                            Text("\(number)").tag(number)
-                        }
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    
-                    Button(action: submitFeedback) {
-                        Text("Submit Feedback")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
-                    .alert(isPresented: $showAlert) {
-                        Alert(title: Text(alertMessage))
-                    }
-                }
-                
-                Section(header: Text("Credits")) {
-                    Button("@dkbuilds") {
-                        openEmail()
-                    }
-                    Link("declankramper.me", destination: URL(string: "https://declankramper.me")!)
-                        .foregroundColor(.blue)
-                    Link("built feb '24", destination: URL(string: "https://declankramper.notion.site/Race-Time-Predictor-App-6a485fdb13d84d07ab26e2aa7c3b2de0?pvs=4")!)
-                        .foregroundColor(.blue)
-                }
+                .padding()
             }
-                .navigationBarTitle("About", displayMode: .inline)
-            
+            .navigationBarTitle("About", displayMode: .inline)
+            .onAppear {
+                preloadKeyboard()
             }
         }
+    }
+    
+    // variable >> view for assumptions
+    var assumptionsSection: some View {
+           VStack(alignment: .leading) {
+               HStack {
+                   Text("Formula Assumptions")
+                       .font(.title3)
+                       .fontWeight(.bold)
+                   
+                   Spacer()  // Pushes the toggle to the far right
+                   
+                   Toggle(isOn: $showFormulaAssumptions.animation()) {
+                       Text(showFormulaAssumptions ? "Hide" : "Show")
+                   }
+                   .labelsHidden()  // Hides the default label to only show the switch
+               }
+               .padding(.bottom, 5)
+               
+               if showFormulaAssumptions {
+                   VStack(alignment: .leading, spacing: 10) {
+                       Text("1. It is assumed that a runner has completed the necessary training for the distance they decide to run.")
+                       Text("2. Assumes that an athlete does not have a solid inherent aptitude for speed or endurance.")
+                       Text("3. The computations are less precise for times less than 3.5 minutes and more than 4 hours.")
+                   }
+                   .transition(.opacity)
+               }
+           }
+       }
+
+    
+    // variable >> view for feedback
+    var feedbackSection: some View {
+        VStack(alignment: .leading, spacing: 15) {
+            Text("Give feedback")
+                .font(.title3)
+                .fontWeight(.bold)
+                .padding(.bottom, 5)
+            
+            Text("What feature did you expect in the product but did not find?")
+            TextField("I expected...", text: $featureExpected)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .focused($focusedField, equals: .expected)
+            
+            Text("If you could magically add one feature, what would it do?")
+            TextField("It would...", text: $featureMagic)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .focused($focusedField, equals: .magic)
+            
+            Text("How satisfied are you with the product?")
+            Picker("Satisfaction", selection: $satisfactionRating) {
+                ForEach(satisfactionOptions, id: \.self) { number in
+                    Text("\(number)").tag(number)
+                }
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            
+            HStack {
+                           Spacer()
+                           Button(action: submitFeedback) {
+                               Text("Submit Feedback")
+                                   .frame(width: UIScreen.main.bounds.width * 0.6)  // Set a specific width
+                                   .padding()
+                                   .background(Color.blue)
+                                   .foregroundColor(.white)
+                                   .cornerRadius(10)
+                           }
+                           Spacer()
+                       }
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text(alertMessage))
+        }
+    }
+    
+    // variable >> view for credits
+    var creditsSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Credits")
+                .font(.title3)
+                .fontWeight(.bold)
+                .padding(.bottom, 5)
+            
+            Button(action: openEmail) {
+                Text("@dkbuilds")
+                .foregroundColor(.blue)
+            }
+            
+            Link("declankramper.me", destination: URL(string: "https://declankramper.me")!)
+                .foregroundColor(.blue)
+            
+            Link("built feb '24", destination: URL(string: "https://declankramper.notion.site/Race-Time-Predictor-App-6a485fdb13d84d07ab26e2aa7c3b2de0?pvs=4")!)
+                .foregroundColor(.blue)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
     
     // model to represent the feedback data that is actually sent to firebase (grouped out for clarity)
     struct Feedback: Codable {
@@ -115,8 +171,8 @@ struct FeedbackView: View {
                             }
                             showAlert = true
                         }
-            
-        }
+                }
+        hideKeyboard()
     }
         
     func openEmail() {
@@ -125,11 +181,43 @@ struct FeedbackView: View {
                 UIApplication.shared.open(emailURL, options: [:], completionHandler: nil)
             }
         }
+    
+    private func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
+    
+    private func preloadKeyboard() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            let dummyTextField = UITextField()
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = windowScene.windows.first {
+                window.addSubview(dummyTextField)
+                dummyTextField.becomeFirstResponder()
+                dummyTextField.resignFirstResponder()
+                dummyTextField.removeFromSuperview()
+            }
+        }
+    }
 
     }
 
+    
 struct FeedbackView_Previews: PreviewProvider {
             static var previews: some View {
                 FeedbackView()
             }
         }
+
+
+
+
+
+/* possible fix for keyboard lag on textfield: <0x12015d540> Gesture: System gesture gate timed out.
+
+.onTapGesture {
+DispatchQueue.main.async {
+    UIApplication.shared.sendAction(#selector(UIResponder.becomeFirstResponder), to: nil, from: nil, for: nil)
+}
+}
+ 
+*/
