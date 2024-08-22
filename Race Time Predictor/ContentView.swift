@@ -172,8 +172,6 @@ struct ContentView: View {
     private func resetPrediction() {
         self.showingResults = false
         self.selectedDistanceIndex = 0
-        self.begDate = Date()
-        self.endDate = Date()
         self.predictionResult = ""
         self.shareTime = "[null]"
         self.bestPerformanceDetails = ""
