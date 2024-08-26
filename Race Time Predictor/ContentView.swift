@@ -38,19 +38,22 @@ struct ContentView: View {
            }
        }
        
-       var raceDistanceSection: some View {
-           HStack {
-               Text("Select your race distance")
-                   .font(.title3)
-                   .fontWeight(.bold)
-               Spacer()
-               Picker("Race Distance", selection: $selectedDistanceIndex) {
-                   ForEach(0..<raceDistances.count, id: \.self) {
-                       Text(self.raceDistances[$0])
-                   }
-               } .pickerStyle(MenuPickerStyle())
-           }
-       }
+    var raceDistanceSection: some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text("Select your race distance")
+                .font(.title3)
+                .fontWeight(.bold)
+            HStack{
+                Text("Race Distance")
+                    .font(.body)
+                Picker("Race Distance", selection: $selectedDistanceIndex) {
+                    ForEach(0..<raceDistances.count, id: \.self) {
+                        Text(self.raceDistances[$0])
+                    }
+                } .pickerStyle(MenuPickerStyle())
+            }
+        }
+    }
        
        var trainingPeriodSection: some View {
            VStack(alignment: .leading, spacing: 10) {
@@ -76,7 +79,7 @@ struct ContentView: View {
                        .imageScale(.medium)
                    Text("HealthKit Data Usage")
                }
-               .foregroundColor(.blue)
+               .foregroundColor(.gray)
            }
        }
        
@@ -103,6 +106,18 @@ struct ContentView: View {
                            .transition(.scale)
                            .fixedSize(horizontal: false, vertical: true)
                    }
+               } else if predictionResult.contains("No running workouts found") {
+                   // Add the fix instructions here
+                   VStack(alignment: .leading, spacing: 10) {
+                       Text("To fix:")
+                           .font(.headline)
+                       Text("(1) Check dates for training period")
+                       Text("(2) Ensure there are running workouts in your Apple Health App")
+                       Text("(3) Grant our app permission to access your Apple Health App workouts in settings")
+                   }
+                   .padding()
+                   .background(Color.gray.opacity(0.1))
+                   .cornerRadius(10)
                }
                
                Spacer()
@@ -157,7 +172,7 @@ struct ContentView: View {
                         self.shareTime = self.formatTime(lowestPredictedTime)
                         self.bestPerformanceDetails = "Best Performance\nDate: \(bestPerformance.date.formatted(date: .abbreviated, time: .shortened))\nTime: \(formatTime(bestPerformance.time))\nDistance: \(formatDistance(bestPerformance.distance)) miles"
                     } else {
-                        self.predictionResult = "No workouts found in the specified period."
+                        self.predictionResult = "No running workouts found in the specified period."
 
                     }
                     self.showingResults = true
@@ -215,7 +230,7 @@ struct ContentView: View {
                 
                 Text("Our app uses HealthKit to access your workout data to provide accurate race time predictions. We value your privacy and only use this data to calculate predictions during your specified training period.")
                 
-                Text("Please ensure you've allowed access to your HealthKit workout data to get results.")
+                Text("Please ensure (1) you've allowed access to your HealthKit workout data and (2) there are running workouts in your Apple Heath App to get results.")
                 
                 Spacer()
             }
@@ -250,3 +265,4 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+

@@ -76,7 +76,7 @@ struct FeedbackView: View {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .focused($focusedField, equals: .expected)
             
-            Text("If you could magically add one feature, what would it do?")
+            Text("If you could magically change or add one feature, what would it do?")
             TextField("It would...", text: $featureMagic)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .focused($focusedField, equals: .magic)
