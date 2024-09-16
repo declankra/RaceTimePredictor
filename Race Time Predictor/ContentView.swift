@@ -141,7 +141,7 @@ struct ContentView: View {
            Button(action: {
                self.showingFeedbackView = true
            }) {
-               Image(systemName: "questionmark.circle")
+               Image(systemName: "info.circle")
                    .font(.largeTitle)
                    .foregroundColor(.blue)
            }
