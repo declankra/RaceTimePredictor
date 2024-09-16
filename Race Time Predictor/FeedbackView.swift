@@ -5,7 +5,7 @@ import FirebaseFirestore
 struct FeedbackView: View {
     @State private var showFormulaAssumptions: Bool = false
     @State private var featureExpected: String = ""
-    @State private var featureMagic: String = ""
+    @State private var featurePaid: String = ""
     @State private var satisfactionRating: Int = 5
     let satisfactionOptions = [1, 2, 3, 4, 5, 6, 8, 9, 10]
     @State private var showAlert: Bool = false
@@ -76,8 +76,8 @@ struct FeedbackView: View {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .focused($focusedField, equals: .expected)
             
-            Text("If you could magically change or add one feature, what would it do?")
-            TextField("It would...", text: $featureMagic)
+            Text("If you could pay $1 to have this app do anything, what would it do?")
+            TextField("It would...", text: $featurePaid)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .focused($focusedField, equals: .magic)
             
@@ -133,14 +133,14 @@ struct FeedbackView: View {
     // model to represent the feedback data that is actually sent to firebase (grouped out for clarity)
     struct Feedback: Codable {
         var featureExpected: String
-        var featureMagic: String
+        var featurePaid: String
         var satisfactionRating: Int
         var timestamp: Date = Date()
         
         var dictionary: [String: Any] {
             return [
                 "featureExpected": featureExpected,
-                "featureMagic": featureMagic,
+                "featurePaid": featurePaid,
                 "satisfactionRating": satisfactionRating,
                 "timestamp": timestamp
             ]
@@ -150,13 +150,13 @@ struct FeedbackView: View {
     
     func submitFeedback() {
        
-        if featureExpected.isEmpty || featureMagic.isEmpty {
+        if featureExpected.isEmpty || featurePaid.isEmpty {
             alertMessage = "Please fill out all feedback fields"
             showAlert = true
         } else {
             let feedback = Feedback(
                 featureExpected: featureExpected,
-                featureMagic: featureMagic,
+                featurePaid: featurePaid,
                 satisfactionRating: satisfactionRating
             )
             let db = Firestore.firestore()
@@ -166,7 +166,7 @@ struct FeedbackView: View {
                             } else {
                                 alertMessage = "I truly value your feedback - Thank you very much!!"
                                 featureExpected = ""
-                                featureMagic = ""
+                                featurePaid = ""
                                 satisfactionRating = 5 // Reset to default value
                             }
                             showAlert = true
