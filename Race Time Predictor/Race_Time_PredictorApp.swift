@@ -7,6 +7,7 @@
 import SwiftUI
 import FirebaseCore
 import FirebaseFirestore
+import FirebaseAnalytics
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
@@ -16,6 +17,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
       Firestore.firestore().settings = FirestoreSettings()
       Firestore.enableLogging(false)
     
+      // Enable analytics debug mode in development
+      #if DEBUG
+      Analytics.setAnalyticsCollectionEnabled(true)
+      #endif
+      
       return true
   }
 }

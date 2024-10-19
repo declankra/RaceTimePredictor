@@ -1,6 +1,7 @@
 import SwiftUI
 import FirebaseCore
 import FirebaseFirestore
+import FirebaseAnalytics
 
 struct FeedbackView: View {
     @State private var showFormulaAssumptions: Bool = false
@@ -173,6 +174,10 @@ struct FeedbackView: View {
                         }
                 }
         hideKeyboard()
+        // Track feedback submission in FeedbackView
+        Analytics.logEvent("feedback_submitted", parameters: [
+                "satisfaction_rating": satisfactionRating
+            ])
     }
         
     func openEmail() {

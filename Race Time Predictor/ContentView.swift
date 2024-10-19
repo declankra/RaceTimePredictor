@@ -1,5 +1,6 @@
 import SwiftUI
 import HealthKit
+import FirebaseAnalytics
 
 struct ContentView: View {
     @State private var selectedDistanceIndex = 0
@@ -42,6 +43,11 @@ struct ContentView: View {
                 }
                 .navigationBarTitle("Race Time Predictor")
             }
+    #if DEBUG
+    .onAppear {
+        Analytics.setAnalyticsCollectionEnabled(true)
+    }
+    #endif
         }
        
     var raceDistanceSection: some View {
@@ -74,8 +80,14 @@ struct ContentView: View {
        var getPredictionButton: some View {
            Button("Get My Prediction") {
                getMyPrediction()
+               // Track when a prediction is made
+                          Analytics.logEvent("prediction_generated", parameters: [
+                              "race_distance": raceDistances[selectedDistanceIndex],
+                              "training_period_days": Calendar.current.dateComponents([.day], from: begDate, to: endDate).day ?? 0
+                          ])
            }
            .buttonStyle(ProminentButtonStyle())
+           
        }
        
        var healthKitInfoLink: some View {
@@ -166,6 +178,8 @@ struct ContentView: View {
                     
                     Button(action: {
                         self.showingShareSheet = true
+                        shareResults() // log the analytics event
+
                     }) {
                         Text("Share Results")
                             .fontWeight(.semibold)
@@ -216,45 +230,72 @@ struct ContentView: View {
         }
     
     private func getMyPrediction() {
-            HealthKitManager.shared.requestAuthorization { success, error in
-                guard success else {
-                    DispatchQueue.main.async {
+        HealthKitManager.shared.requestAuthorization { success, error in
+            guard success else {
+                DispatchQueue.main.async {
+                    self.predictedTime = nil
+                    self.requiredPace = nil
+                    self.errorMessage = "Error: \(error?.localizedDescription ?? "Could not access HealthKit data.")"
+                    self.showingResults = true
+                    
+                    // Log failed prediction attempt
+                    Analytics.logEvent("prediction_generated", parameters: [
+                        "race_distance": raceDistances[selectedDistanceIndex],
+                        "training_period_days": Calendar.current.dateComponents([.day], from: begDate, to: endDate).day ?? 0,
+                        "success": false,
+                        "error_type": "healthkit_authorization",
+                        "error_message": error?.localizedDescription ?? "Could not access HealthKit data"
+                    ])
+                }
+                return
+            }
+            
+            HealthKitManager.shared.getRunningWorkouts(begDate: self.begDate, endDate: self.endDate) { performances in
+                let result = HealthKitManager.shared.findBestPerformance(workouts: performances, predictDistance: self.predictDistances[self.selectedDistanceIndex] * 1000)
+                
+                DispatchQueue.main.async {
+                    if let bestPerformance = result.bestPerformance, let lowestPredictedTime = result.lowestPredictedTime {
+                        self.predictedTime = lowestPredictedTime
+                        self.shareTime = self.formatTime(lowestPredictedTime)
+                        self.bestPerformanceDetails = """
+                        Date: \(bestPerformance.date.formatted(date: .abbreviated, time: .omitted))
+                        Time: \(formatTime(bestPerformance.time))
+                        Distance: \(formatDistance(bestPerformance.distance)) miles
+                        """
+                        
+                        // Calculate pace in minutes per mile
+                        let predictedDistanceMiles = (self.predictDistances[self.selectedDistanceIndex] * 1000) * 0.000621371
+                        let pace = lowestPredictedTime / 60.0 / predictedDistanceMiles
+                        self.requiredPace = pace
+                        self.errorMessage = nil
+                        
+                        // Log successful prediction
+                        Analytics.logEvent("prediction_generated", parameters: [
+                            "race_distance": raceDistances[selectedDistanceIndex],
+                            "training_period_days": Calendar.current.dateComponents([.day], from: begDate, to: endDate).day ?? 0,
+                            "success": true,
+                            "predicted_time": self.shareTime,
+                            "required_pace": formatPace(pace)
+                        ])
+                    } else {
                         self.predictedTime = nil
                         self.requiredPace = nil
-                        self.errorMessage = "Error: \(error?.localizedDescription ?? "Could not access HealthKit data.")"
-                        self.showingResults = true
+                        self.errorMessage = "No running workouts found in the specified period."
+                        
+                        // Log failed prediction due to no data
+                        Analytics.logEvent("prediction_generated", parameters: [
+                            "race_distance": raceDistances[selectedDistanceIndex],
+                            "training_period_days": Calendar.current.dateComponents([.day], from: begDate, to: endDate).day ?? 0,
+                            "success": false,
+                            "error_type": "no_workouts",
+                            "error_message": "No running workouts found in the specified period"
+                        ])
                     }
-                    return
-                }
-                
-                HealthKitManager.shared.getRunningWorkouts(begDate: self.begDate, endDate: self.endDate) { performances in
-                    let result = HealthKitManager.shared.findBestPerformance(workouts: performances, predictDistance: self.predictDistances[self.selectedDistanceIndex] * 1000)
-                    
-                    DispatchQueue.main.async {
-                        if let bestPerformance = result.bestPerformance, let lowestPredictedTime = result.lowestPredictedTime {
-                            self.predictedTime = lowestPredictedTime
-                            self.shareTime = self.formatTime(lowestPredictedTime)
-                            self.bestPerformanceDetails = """
-                            Date: \(bestPerformance.date.formatted(date: .abbreviated, time: .omitted))
-                            Time: \(formatTime(bestPerformance.time))
-                            Distance: \(formatDistance(bestPerformance.distance)) miles
-                            """
-                            
-                            // Calculate pace in minutes per mile
-                            let predictedDistanceMiles = (self.predictDistances[self.selectedDistanceIndex] * 1000) * 0.000621371
-                            let pace = lowestPredictedTime / 60.0 / predictedDistanceMiles
-                            self.requiredPace = pace
-                            self.errorMessage = nil
-                        } else {
-                            self.predictedTime = nil
-                            self.requiredPace = nil
-                            self.errorMessage = "No running workouts found in the specified period."
-                        }
-                        self.showingResults = true
-                    }
+                    self.showingResults = true
                 }
             }
         }
+    }
     
     
     private func resetPrediction() {
@@ -340,6 +381,15 @@ struct ContentView: View {
             .background(Color.clear) // Ensure the HStack background is clear
 
         }
+    }
+    // Track when results are shared
+    private func shareResults() {
+        Analytics.logEvent("results_shared", parameters: [
+                "race_distance": raceDistances[selectedDistanceIndex],
+                "predicted_time": shareTime,
+                "training_period_days": Calendar.current.dateComponents([.day], from: begDate, to: endDate).day ?? 0,
+                "has_error": errorMessage != nil,
+        ])
     }
 }
 
