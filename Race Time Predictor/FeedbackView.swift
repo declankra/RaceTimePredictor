@@ -217,12 +217,3 @@ struct FeedbackView_Previews: PreviewProvider {
 
 
 
-/* possible fix for keyboard lag on textfield: <0x12015d540> Gesture: System gesture gate timed out.
-
-.onTapGesture {
-DispatchQueue.main.async {
-    UIApplication.shared.sendAction(#selector(UIResponder.becomeFirstResponder), to: nil, from: nil, for: nil)
-}
-}
- 
-*/
