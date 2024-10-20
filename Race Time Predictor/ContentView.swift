@@ -18,6 +18,8 @@ struct ContentView: View {
     @State private var showingFeedbackView = false
     @State private var showingHealthKitInfoView = false
     @State private var errorMessage: String? = nil
+    @State private var selectedPaceUnit = 0 // 0 for min/mile, 1 for min/km
+    let paceUnits = ["min/mile", "min/km"]
 
 
     var body: some View {
@@ -28,6 +30,7 @@ struct ContentView: View {
                             if !showingResults {
                                 raceDistanceSection
                                 trainingPeriodSection
+                                paceUnitSection
                                 getPredictionButton
                                 healthKitInfoLink
                             } else {
@@ -89,6 +92,21 @@ struct ContentView: View {
            .buttonStyle(ProminentButtonStyle())
            
        }
+    
+        var paceUnitSection: some View {
+              VStack(alignment: .leading, spacing: 5) {
+                  Text("Select pace unit")
+                      .font(.title3)
+                      .fontWeight(.bold)
+                  
+                  Picker("Pace Unit", selection: $selectedPaceUnit) {
+                      ForEach(paceUnits.indices, id: \.self) { index in
+                            Text(paceUnits[index]).tag(index)
+                        }
+                    }
+                .pickerStyle(SegmentedPickerStyle())
+              }
+          }
        
        var healthKitInfoLink: some View {
            NavigationLink(destination: HealthKitInfoView()) {
@@ -120,9 +138,14 @@ struct ContentView: View {
                         .font(.headline)
                         .foregroundColor(.gray)
                     
-                    Text("\(formatPace(requiredPace)) min/mile")
-                        .font(.system(size: 34, weight: .semibold))
-                        .foregroundColor(.green)
+                    HStack(alignment: .lastTextBaseline, spacing: 4) {
+                        Text(selectedPaceUnit == 1 ? formatPaceMetric(requiredPace) : formatPace(requiredPace))
+                            .font(.system(size: 34, weight: .semibold))
+                                            
+                        Text(paceUnits[selectedPaceUnit])
+                            .font(.system(size: 20))
+                        }
+                    .foregroundColor(.green)
                 }
                 .multilineTextAlignment(.center)
             } else if let errorMessage = errorMessage {
@@ -326,6 +349,14 @@ struct ContentView: View {
             let paceSeconds = Int((pace - Double(paceMinutes)) * 60.0 + 0.5)
             return String(format: "%d:%02d", paceMinutes, paceSeconds)
         }
+    
+        private func formatPaceMetric(_ pace: Double) -> String {
+               // Convert min/mile to min/km (1 mile = 1.60934 kilometers)
+               let pacePerKm = pace / 1.60934
+               let paceMinutes = Int(pacePerKm)
+               let paceSeconds = Int((pacePerKm - Double(paceMinutes)) * 60.0 + 0.5)
+               return String(format: "%d:%02d", paceMinutes, paceSeconds)
+           }
     
     // Function to format the distance for result display
     func formatDistance(_ meters: Double) -> String {
