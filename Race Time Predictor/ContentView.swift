@@ -374,7 +374,7 @@ struct ContentView: View {
         let distance = raceDistances[selectedDistanceIndex]
         // let shareTime = predictionResult.suffix(8)
         // Assume predictionResult is already formatted as "HH:MM:SS"
-        return "Got my \(distance) race time prediction from #RaceTimePredictorApp: \(self.shareTime)! What's yours? #RaceDayGoals 🏃‍♀️🏅"
+        return "Got my \(distance) race time prediction from #RaceTimeCalculatorApp: \(self.shareTime)! What's yours? #RaceDayGoals 🏃‍♀️🏅"
     }
     
     // structure for health kit message view
