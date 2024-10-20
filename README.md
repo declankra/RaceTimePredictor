@@ -2,7 +2,7 @@
 
 ## Download on app store: https://apps.apple.com/app/race-time-calculator/id6478423515
 
-## Calculate your predicted race time using your apple watch workout data
+## Calculate your predicted race time using your Apple Health running data
 1. select your training period for analysis
 2. select your upcoming race distance
 3. get your predicted finish time
