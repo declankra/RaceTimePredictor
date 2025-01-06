@@ -5,6 +5,7 @@ import FirebaseAnalytics
 
 struct FeedbackView: View {
     @State private var showFormulaAssumptions: Bool = false
+    @State private var showHowItWorks: Bool = false
     @State private var featureExpected: String = ""
     @State private var featurePaid: String = ""
     @State private var satisfactionRating: Int = 5
@@ -22,6 +23,7 @@ struct FeedbackView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 50) {
+                    howItWorksSection
                     assumptionsSection
                     feedbackSection
                     creditsSection
@@ -35,6 +37,31 @@ struct FeedbackView: View {
         }
     }
     
+    var howItWorksSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("How It Works")
+                    .font(.title3)
+                    .fontWeight(.bold)
+                
+                Spacer()  // Pushes the toggle to the far right
+                
+                Toggle(isOn: $showHowItWorks.animation()) {
+                    Text(showHowItWorks ? "Hide" : "Show")
+                }
+                .labelsHidden()  // Hides the default label to only show the switch
+            }
+            .padding(.bottom, 5)
+            if showHowItWorks {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("This app analyzes your running workouts to predict race times based on your fitness level at the end of your selected training period. The end date you choose represents when your fitness level will be evaluated - this can't be in the future as the app needs actual workout data to assess your capabilities.")
+                    
+                    Text("Think of it as a running fitness snapshot - the end date represents when your fitness level is being measured, which is why it can't be in the future.")
+                }
+                .transition(.opacity)
+            }
+        }
+    }
     // variable >> view for assumptions
     var assumptionsSection: some View {
            VStack(alignment: .leading) {
@@ -67,22 +94,21 @@ struct FeedbackView: View {
     // variable >> view for feedback
     var feedbackSection: some View {
         VStack(alignment: .leading, spacing: 15) {
-            Text("Give feedback")
+            Text("Hey Runner! 👋 What do you want in an iPhone running app? ")
                 .font(.title3)
                 .fontWeight(.bold)
-                .padding(.bottom, 5)
-            
-            Text("What feature did you expect in the product but did not find?")
-            TextField("I expected...", text: $featureExpected)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .focused($focusedField, equals: .expected)
-            
-            Text("If you could pay $1 to have this app do anything, what would it do?")
+            Text("Your feedback will decide features for an upcoming app dedicated to the iPhone & Apple Watch running community")
+                 .font(.footnote)
+                 .foregroundColor(.gray)
+                 .padding(.bottom, 10)
+
+            Text("If you could pay $10 to have an iPhone running app do anything, what would it do?")
             TextField("It would...", text: $featurePaid)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .focused($focusedField, equals: .magic)
             
-            Text("How satisfied are you with the product?")
+            
+            Text("How satisfied are you with this product?")
             Picker("Satisfaction", selection: $satisfactionRating) {
                 ForEach(satisfactionOptions, id: \.self) { number in
                     Text("\(number)").tag(number)

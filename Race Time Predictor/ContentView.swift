@@ -1,6 +1,7 @@
 import SwiftUI
 import HealthKit
 import FirebaseAnalytics
+import StoreKit
 
 struct ContentView: View {
     @State private var selectedDistanceIndex = 0
@@ -55,7 +56,7 @@ struct ContentView: View {
        
     var raceDistanceSection: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text("Select your race distance")
+            Text("Select Your Race Distance")
                 .font(.title3)
                 .fontWeight(.bold)
             HStack{
@@ -71,10 +72,16 @@ struct ContentView: View {
     }
        
        var trainingPeriodSection: some View {
-           VStack(alignment: .leading, spacing: 10) {
-               Text("Select training period for prediction")
+           VStack(alignment: .leading) {
+               Text("Select Training Period")
                    .font(.title3)
                    .fontWeight(.bold)
+            
+               Text("Choose dates to analyze past workouts")
+                    .font(.footnote)
+                    .foregroundColor(.gray)
+                    .padding(.bottom,5)
+
                DatePicker("Beginning Date", selection: $begDate, in: ...Date(), displayedComponents: .date)
                DatePicker("End Date", selection: $endDate, in: ...Date(), displayedComponents: .date)
            }
@@ -95,7 +102,7 @@ struct ContentView: View {
     
         var paceUnitSection: some View {
               VStack(alignment: .leading, spacing: 5) {
-                  Text("Select pace unit")
+                  Text("Select Pace Unit")
                       .font(.title3)
                       .fontWeight(.bold)
                   
@@ -291,6 +298,9 @@ struct ContentView: View {
                         let pace = lowestPredictedTime / 60.0 / predictedDistanceMiles
                         self.requiredPace = pace
                         self.errorMessage = nil
+                        
+                        // Increment predictions count and potentially show review request
+                        ReviewManager.shared.incrementPredictionsCount()
                         
                         // Log successful prediction
                         Analytics.logEvent("prediction_generated", parameters: [
