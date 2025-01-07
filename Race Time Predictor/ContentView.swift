@@ -40,6 +40,7 @@ struct ContentView: View {
                         }
                     }
                     .padding()
+                    .padding(.bottom, 90) // Adjust padding as needed
                 
                 feedbackButton
                     .padding()
