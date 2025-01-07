@@ -21,38 +21,61 @@ struct ContentView: View {
     @State private var errorMessage: String? = nil
     @State private var selectedPaceUnit = 0 // 0 for min/mile, 1 for min/km
     let paceUnits = ["min/mile", "min/km"]
-
+    @StateObject private var reviewManager = ReviewManager.shared
+    @StateObject private var feedbackManager = FeedbackManager.shared
+    @State private var showingFeedbackAlert = false
 
     var body: some View {
-            NavigationView {
-                ZStack(alignment: .bottomTrailing) {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 70) {
-                            if !showingResults {
-                                raceDistanceSection
-                                trainingPeriodSection
-                                paceUnitSection
-                                getPredictionButton
-                                healthKitInfoLink
-                            } else {
-                                resultsSection
-                            }
+        NavigationView {
+            ZStack(alignment: .bottomTrailing) {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 70) {
+                        if !showingResults {
+                            raceDistanceSection
+                            trainingPeriodSection
+                            paceUnitSection
+                            getPredictionButton
+                            healthKitInfoLink
+                        } else {
+                            resultsSection
                         }
-                        .padding()
-                        .padding(.bottom, 90) // Adjust padding as needed
                     }
-
-                    feedbackButton
-                        .padding()
+                    .padding()
+                    .padding(.bottom, 90) // Adjust padding as needed
                 }
-                .navigationBarTitle("Race Time Predictor")
+                
+                feedbackButton
+                    .padding()
             }
-    #if DEBUG
-    .onAppear {
-        Analytics.setAnalyticsCollectionEnabled(true)
-    }
-    #endif
+            .navigationBarTitle("Race Time Predictor")
         }
+        .onAppear {
+#if DEBUG
+            Analytics.setAnalyticsCollectionEnabled(true)
+#endif
+            reviewManager.incrementAppLaunch()
+        }
+        .alert(
+            "Help Build the Running App You've Always Wanted",
+            isPresented: $feedbackManager.showFeedbackAlert,
+            actions: {
+                Button("Help Build It! 🏃‍♂️") {
+                    Analytics.logEvent("feedback_help_button_clicked", parameters: nil) // Track button click
+                    feedbackManager.setFeedbackProvided() // don't show again
+                    self.showingFeedbackView = true
+                }
+                .fontWeight(.heavy)
+                .buttonStyle(.borderedProminent)
+                
+                Button("Maybe Later", role: .cancel) { }
+                    .buttonStyle(.plain)
+                    .foregroundColor(.gray)
+            },
+            message: {
+                Text("Guide the development of a new iPhone app for the Apple Watch running community")
+            }
+        )
+    }
        
     var raceDistanceSection: some View {
         VStack(alignment: .leading, spacing: 5) {
@@ -305,8 +328,8 @@ struct ContentView: View {
                         self.errorMessage = nil
                         
                         // Increment predictions count and potentially show review request
-                        ReviewManager.shared.incrementPredictionsCount()
-                        
+                        feedbackManager.incrementPredictionCount()
+
                         // Log successful prediction
                         Analytics.logEvent("prediction_generated", parameters: [
                             "race_distance": raceDistances[selectedDistanceIndex],
