@@ -6,7 +6,6 @@ import FirebaseAnalytics
 struct FeedbackView: View {
     @State private var showFormulaAssumptions: Bool = false
     @State private var showHowItWorks: Bool = false
-    @State private var featureExpected: String = ""
     @State private var featurePaid: String = ""
     @State private var satisfactionRating: Int = 5
     let satisfactionOptions = [1, 2, 3, 4, 5, 6, 8, 9, 10]
@@ -15,7 +14,7 @@ struct FeedbackView: View {
     @FocusState private var focusedField: FocusField?
     
     enum FocusField: Hashable {
-        case expected, magic
+        case magic
     }
     
     // body variable >> view for all three section variables included
@@ -159,14 +158,12 @@ struct FeedbackView: View {
     
     // model to represent the feedback data that is actually sent to firebase (grouped out for clarity)
     struct Feedback: Codable {
-        var featureExpected: String
         var featurePaid: String
         var satisfactionRating: Int
         var timestamp: Date = Date()
         
         var dictionary: [String: Any] {
             return [
-                "featureExpected": featureExpected,
                 "featurePaid": featurePaid,
                 "satisfactionRating": satisfactionRating,
                 "timestamp": timestamp
@@ -177,12 +174,11 @@ struct FeedbackView: View {
     
     func submitFeedback() {
        
-        if featureExpected.isEmpty || featurePaid.isEmpty {
-            alertMessage = "Please fill out all feedback fields"
+        if featurePaid.isEmpty {
+            alertMessage = "Please fill out the feedback field"
             showAlert = true
         } else {
             let feedback = Feedback(
-                featureExpected: featureExpected,
                 featurePaid: featurePaid,
                 satisfactionRating: satisfactionRating
             )
@@ -192,7 +188,6 @@ struct FeedbackView: View {
                                 alertMessage = "Error submitting feedback: \(error.localizedDescription)"
                             } else {
                                 alertMessage = "I truly value your feedback - Thank you very much!!"
-                                featureExpected = ""
                                 featurePaid = ""
                                 satisfactionRating = 5 // Reset to default value
                             }
