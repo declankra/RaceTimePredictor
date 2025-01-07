@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA0FA4602D2C7F84003FC655 /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0FA45F2D2C7F84003FC655 /* ReviewManager.swift */; };
+		FA0FA4622D2CC1F6003FC655 /* FeedbackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0FA4612D2CC1F6003FC655 /* FeedbackManager.swift */; };
 		FA1775ED2B87B7F8005924CE /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1775EC2B87B7F8005924CE /* HealthKitManager.swift */; };
 		FA17DE752B89508C00B905D1 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA17DE742B89508C00B905D1 /* ActivityView.swift */; };
 		FA7617252B8E2E5100BAADF2 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7617242B8E2E5100BAADF2 /* FeedbackView.swift */; };
@@ -44,6 +46,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FA0FA45F2D2C7F84003FC655 /* ReviewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManager.swift; sourceTree = "<group>"; };
+		FA0FA4612D2CC1F6003FC655 /* FeedbackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackManager.swift; sourceTree = "<group>"; };
 		FA1775EC2B87B7F8005924CE /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		FA17DE742B89508C00B905D1 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		FA7617242B8E2E5100BAADF2 /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
@@ -127,6 +131,8 @@
 				FA833CAE2B869B05008DCD90 /* Race_Time_PredictorApp.swift */,
 				FA1775EC2B87B7F8005924CE /* HealthKitManager.swift */,
 				FA833CB02B869B05008DCD90 /* ContentView.swift */,
+				FA0FA4612D2CC1F6003FC655 /* FeedbackManager.swift */,
+				FA0FA45F2D2C7F84003FC655 /* ReviewManager.swift */,
 				FA7617242B8E2E5100BAADF2 /* FeedbackView.swift */,
 				FA17DE742B89508C00B905D1 /* ActivityView.swift */,
 				FA833CB22B869B05008DCD90 /* Item.swift */,
@@ -311,9 +317,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA0FA4622D2CC1F6003FC655 /* FeedbackManager.swift in Sources */,
 				FA833CB12B869B05008DCD90 /* ContentView.swift in Sources */,
 				FA833CB32B869B05008DCD90 /* Item.swift in Sources */,
 				FA1775ED2B87B7F8005924CE /* HealthKitManager.swift in Sources */,
+				FA0FA4602D2C7F84003FC655 /* ReviewManager.swift in Sources */,
 				FA17DE752B89508C00B905D1 /* ActivityView.swift in Sources */,
 				FA833CAF2B869B05008DCD90 /* Race_Time_PredictorApp.swift in Sources */,
 				FA7617252B8E2E5100BAADF2 /* FeedbackView.swift in Sources */,
@@ -478,7 +486,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Race Time Predictor/Race Time Predictor.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"Race Time Predictor/Preview Content\"";
 				DEVELOPMENT_TEAM = 3R48S2N947;
 				ENABLE_PREVIEWS = YES;
@@ -498,7 +506,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 1.6;
 				PRODUCT_BUNDLE_IDENTIFIER = "dkbuilds.Race-Time-Predictor";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -513,7 +521,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Race Time Predictor/Race Time Predictor.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"Race Time Predictor/Preview Content\"";
 				DEVELOPMENT_TEAM = 3R48S2N947;
 				ENABLE_PREVIEWS = YES;
@@ -533,7 +541,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 1.6;
 				PRODUCT_BUNDLE_IDENTIFIER = "dkbuilds.Race-Time-Predictor";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
