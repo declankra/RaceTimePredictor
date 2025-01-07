@@ -28,6 +28,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .bottomTrailing) {
+                ScrollView {
                     VStack(alignment: .leading, spacing: 70) {
                         if !showingResults {
                             raceDistanceSection
@@ -41,7 +42,7 @@ struct ContentView: View {
                     }
                     .padding()
                     .padding(.bottom, 90) // Adjust padding as needed
-                
+                }
                 feedbackButton
                     .padding()
             }
