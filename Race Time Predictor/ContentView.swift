@@ -47,9 +47,6 @@ struct ContentView: View {
             .navigationBarTitle("Race Time Predictor")
         }
         .onAppear {
-#if DEBUG
-            Analytics.setAnalyticsCollectionEnabled(true)
-#endif
             reviewManager.incrementAppLaunch()
         }
         .alert(
