@@ -56,6 +56,10 @@ struct FeedbackView: View {
                     Text("This app analyzes your running workouts to predict race times based on your fitness level at the end of your selected training period. The end date you choose represents when your fitness level will be evaluated - this can't be in the future as the app needs actual workout data to assess your capabilities.")
                     
                     Text("Think of it as a running fitness snapshot - the end date represents when your fitness level is being measured, which is why it can't be in the future.")
+                    
+                    Link("I'm interested in learning more", destination: URL(string: "https://declankramper.notion.site/Race-Time-Predictor-App-6a485fdb13d84d07ab26e2aa7c3b2de0?pvs=4")!)
+                        .foregroundColor(.blue)
+                        .padding(.top, 5)
                 }
                 .transition(.opacity)
             }

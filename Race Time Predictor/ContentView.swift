@@ -238,9 +238,14 @@ struct ContentView: View {
                 }
                 .padding(.horizontal)
             }
-            
-            Link("Learn How This Works", destination: URL(string: "https://declankramper.notion.site/Race-Time-Predictor-App-6a485fdb13d84d07ab26e2aa7c3b2de0?pvs=4")!)
-                .padding(.top, 10)
+            Button(action: {
+                self.showingFeedbackView = true
+            }) {
+                Text("Request a new feature")
+                    .foregroundColor(.blue)
+            }
+            .padding(.top, 10)
+
         }
         .padding()
     }
